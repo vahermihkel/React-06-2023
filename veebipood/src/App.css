@@ -29,3 +29,18 @@
 .nupp:active {
   text-decoration: underline;
 }
+
+.hele {
+  background-color: aliceblue;
+  min-height: 100vh;
+}
+
+.tume {
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+}
+
+.kuldne {
+  color: goldenrod;
+}
