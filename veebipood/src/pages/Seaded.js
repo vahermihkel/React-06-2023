@@ -1,15 +1,29 @@
 import React, { useState } from 'react'
 // rfce
 
-// KODUS: Keel localStorage-sse
 function Seaded() {
-  const [keel, uuendaKeel] = useState("est");
+  const [keel, uuendakeel] = useState(localStorage.getItem("keel")||"est");
+
+  const uuendakeelEst = () => {
+    uuendakeel ("est")
+    localStorage.setItem ("keel", "est")
+  }
+
+  const uuendakeelEng = () => {
+    uuendakeel ("eng")
+    localStorage.setItem ("keel", "eng")
+  }
+  
+  const uuendakeelRus = () => {
+    uuendakeel ("rus")
+    localStorage.setItem ("keel", "rus")
+  }
 
   return (
     <div>
-      <button onClick={() => uuendaKeel("est")}>Eesti keel</button>
-      <button onClick={() => uuendaKeel("eng")}>English</button>
-      <button onClick={() => uuendaKeel("rus")}>Pycckij</button>
+      <button onClick={uuendakeelEst}>Eesti keel</button>
+      <button onClick={uuendakeelEng}>English</button>
+      <button onClick={uuendakeelRus}>Pyccki</button>
       {keel === "est" && <div>Leht on eesti keelne</div>}
       {keel === "eng" && <div>Page is in English</div>}
       {keel === "rus" && <div>Pycckij jazõk</div>}

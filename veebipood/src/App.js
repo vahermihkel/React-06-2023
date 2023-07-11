@@ -6,6 +6,9 @@ import LisaToode from './pages/LisaToode';
 import Ostukorv from './pages/Ostukorv';
 import { useState } from 'react';
 import Seaded from './pages/Seaded';
+import Hinnad from './pages/Hinnad';
+import Poed from './pages/Poed';
+import Tooted from './pages/Tooted';
 
 // tumesinine - tavaline tag
 // roheline - võõras tag, mis tuleb importida
@@ -47,11 +50,26 @@ function App() {
         <button className="nupp">Seaded</button>
       </Link>
 
+      <Link to="/hinnad">
+        <button className="nupp">Hinnad</button>
+      </Link>
+
+      <Link to="/poed">
+        <button className="nupp">Poed</button>
+      </Link>
+
+      <Link to="/tooted">
+        <button className="nupp">Tooted</button>
+      </Link>
+
       <Routes>
         <Route path="" element={ <Avaleht /> } />
         <Route path="lisa-toode" element={ <LisaToode /> } />
         <Route path="ostukorv" element={ <Ostukorv /> } />
         <Route path="seaded" element={ <Seaded /> } />
+        <Route path="hinnad" element={ <Hinnad /> } />
+        <Route path="poed" element={ <Poed /> } />
+        <Route path="tooted" element={ <Tooted /> } />
       </Routes>
     </div>
   );
