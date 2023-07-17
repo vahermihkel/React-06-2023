@@ -9,6 +9,9 @@ import Seaded from './pages/Seaded';
 import Hinnad from './pages/Hinnad';
 import Poed from './pages/Poed';
 import Tooted from './pages/Tooted';
+import HaldaTooted from './pages/HaldaTooted';
+import MuudaToode from './pages/MuudaToode';
+import YksikToode from './pages/YksikToode';
 
 // tumesinine - tavaline tag
 // roheline - võõras tag, mis tuleb importida
@@ -62,6 +65,10 @@ function App() {
         <button className="nupp">Tooted</button>
       </Link>
 
+      <Link to="/halda">
+        <button className="nupp">Halda tooteid</button>
+      </Link>
+
       <Routes>
         <Route path="" element={ <Avaleht /> } />
         <Route path="lisa-toode" element={ <LisaToode /> } />
@@ -70,6 +77,9 @@ function App() {
         <Route path="hinnad" element={ <Hinnad /> } />
         <Route path="poed" element={ <Poed /> } />
         <Route path="tooted" element={ <Tooted /> } />
+        <Route path="halda" element={ <HaldaTooted /> } />
+        <Route path="muuda/:jrknr" element={ <MuudaToode /> } />
+        <Route path="toode/:index" element={ <YksikToode /> } />
       </Routes>
     </div>
   );

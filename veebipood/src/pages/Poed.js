@@ -65,8 +65,18 @@ function Poed() {
     uuendaPoed(uuedPoed);
   }
 
+  // HTMLs on ilma klikki ootamata (sulud on lõpus), seega ei saa siia sisse
+  // panna ühtegi useState funktsiooni
+  const arvutaTahedKokku = () => {
+    let summa = 0; // let muutuja on muutuja, millele saan uut väärtust panna
+    poed.forEach(yksPood => summa = summa + yksPood.length);
+    //poed.forEach(yksPood => summa += yksPood.length);
+    return summa;
+  }
+
   return (
     <div>
+      <div>{arvutaTahedKokku()}</div>
       <button onClick={reset}>Reset</button>
       <div>Kokku: {poed.length} tk</div>
       <button onClick={sorteeriAZ}>Sorteeri A-Z</button>

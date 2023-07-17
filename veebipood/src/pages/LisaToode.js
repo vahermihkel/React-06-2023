@@ -1,4 +1,7 @@
 import React, { useRef, useState } from 'react'
+import tootedFailist from "../data/tooted.json";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 // tumesinine - tavaline tag
 // roheline - võõras tag, mis tuleb importida
@@ -30,15 +33,20 @@ function LisaToode() {
 
   // ES5   EchmaScript5
   // function lisa() {
-    
+
   // }
 
   // ES6   - aastast 2015
   const lisa = () => {
     if (inputiLuger.current.value === "") {
       uuendaSonum("Tühja nimetusega toodet ei saa lisada!");
+      toast.error("Tühja nimetusega toodet ei saa lisada!");
     } else {
       uuendaSonum("Toode lisatud: " + inputiLuger.current.value);
+      tootedFailist.push(inputiLuger.current.value);
+      toast.success("Edukalt " + inputiLuger.current.value +  " lisatud!");
+      inputiLuger.current.value = "";
+      // lisa andmebaasi
     }
   }
 
@@ -48,6 +56,11 @@ function LisaToode() {
       <label>Toote nimi</label> <br />
       <input ref={inputiLuger} type="text" /> <br />
       <button onClick={lisa}>Lisa</button> <br />
+      <ToastContainer 
+        position="bottom-right"
+        autoClose={4000}
+        theme={localStorage.getItem("teema") === "tume" ? "light" : "dark"}
+      />
     </div>
   )
 }
