@@ -17,11 +17,20 @@ function YksikToode() {
   // 4. ta ei tohi olla funktsiooni sees
   // 5. ta ei tohi olla dünaamiliselt loodud
 
+  // undefined  --> tühjus, mille tüüpi ka ei teata (sõna, number, boolean)
+  // null --> tühjus, mille tüüpi teatakse, on nt sõna
+
   return (
     <div>
-      <div>Toote järjekorranumber: {index}</div>
-      <div>Toote nimi: {leitud}</div>
-      <div>Toote .... : </div>
+      
+      {leitud !== undefined &&
+      <>
+        <div>Toote järjekorranumber: {index}</div>
+        <div>Toote nimi: {leitud}</div>
+        <div>Toote .... : </div>
+      </>}
+
+      { leitud === undefined && <div>Toodet ei leitud!</div> }
     </div>
   )
 }

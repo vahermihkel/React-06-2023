@@ -8,9 +8,14 @@ function MuudaToode() {
 
   return (
     <div>
-      <label>Toote nimi</label> <br />
-      <input defaultValue={leitud} type="text" /> <br />
-      <button>Muuda</button> <br />
+     {leitud !== undefined &&
+      <div>
+        <label>Toote nimi</label> <br />
+        <input defaultValue={leitud} type="text" /> <br />
+        <button>Muuda</button> <br />
+      </div>}
+
+      {leitud === undefined && <div>Toodet ei leitud</div> }
     </div>
   )
 }

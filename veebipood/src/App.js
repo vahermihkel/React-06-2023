@@ -12,6 +12,8 @@ import Tooted from './pages/Tooted';
 import HaldaTooted from './pages/HaldaTooted';
 import MuudaToode from './pages/MuudaToode';
 import YksikToode from './pages/YksikToode';
+import YksikPood from './pages/YksikPood';
+import NotFound from './pages/NotFound';
 
 // tumesinine - tavaline tag
 // roheline - võõras tag, mis tuleb importida
@@ -80,6 +82,8 @@ function App() {
         <Route path="halda" element={ <HaldaTooted /> } />
         <Route path="muuda/:jrknr" element={ <MuudaToode /> } />
         <Route path="toode/:index" element={ <YksikToode /> } />
+        <Route path="pood/:yksPood" element={ <YksikPood /> } />
+        <Route path="*" element={ <NotFound /> } />
       </Routes>
     </div>
   );

@@ -1,1 +1,6 @@
-["Nobe", "Tesla", "BMW", "Saab"]
+[
+  {"nimi": "Nobe", "hind": 25000, "aktiivne": true, "pilt": "https://estonia.ee/wp-content/uploads/nobe_netist_4.jpg"}, 
+  {"nimi": "Tesla", "hind": 85000, "aktiivne": true, "pilt": "https://upload.wikimedia.org/wikipedia/commons/8/82/Tesla_Model_S_%28Facelift_ab_04-2016%29_trimmed.jpg"}, 
+  {"nimi": "BMW", "hind": 50000, "aktiivne": false, "pilt": "https://cars.usnews.com/static/images/Auto/izmo/i159615491/2023_bmw_2_series_angularfront.jpg"}, 
+  {"nimi": "Saab", "hind": 40000, "aktiivne": true, "pilt": "https://hips.hearstapps.com/hmg-prod/amv-prod-cad-assets/images/11q1/387349/2012-saab-9-3-griffin-aero-sport-sedan-photo-388004-s-986x603.jpg"}
+]
