@@ -14,7 +14,10 @@ function HaldaTooted() {
     <div>
       {tooted.map((toode, jrknr) => 
           <div>
-            {toode}
+            <div>{toode.nimi}</div>
+            <div>{toode.hind} €</div>
+            <div>{toode.pilt}</div>
+            <div><img className="pilt" src={toode.pilt} alt="" /></div>
             <button onClick={() => kustuta(jrknr)}>Kustuta</button>
             <Link to={"/muuda/" + jrknr}>
               <button>Muuda</button>

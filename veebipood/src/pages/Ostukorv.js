@@ -20,18 +20,30 @@ function Ostukorv() {
     uuendaOstukorv(ostukorv.slice()); // HTML uuenduseks
   }
 
+  const arvutaKogusumma = () => {
+    let summa = 0; // [{n: "T", h: 25},{n: "N", h: 55}]
+          // {n: "T", h: 25}   25   =   0   +   25
+          // {n: "N", h: 55}   80   =   25  +   55
+    ostukorv.forEach(toode => summa = summa + toode.hind);
+    return summa;
+  }
+
   return ( // sort((a,b) =>)      filter(e => )
     <div>
-      <button onClick={tyhjenda}>Tühjenda</button>
-      <div>Kokku: {ostukorv.length} tk</div>
+      {ostukorv.length > 0 && <button onClick={tyhjenda}>Tühjenda</button>}
+      {ostukorv.length > 0 && <div>Kokku: {ostukorv.length} tk</div>}
       {ostukorv.map((toode, indeks) => 
         <div key={indeks}>
-          {toode}
+          {toode.nimi} - {toode.hind} €
           <button onClick={() => eemalda(indeks)}>x</button>
           <button onClick={() => lisa(toode)}>+</button>
         </div>)}
-      Ostukorv on tühi.
-      <Link to="/">Mine tooteid lisama</Link>
+      {ostukorv.length === 0 && 
+        <div>
+          Ostukorv on tühi.
+          <Link to="/tooted">Mine tooteid lisama</Link>
+        </div>}
+        {ostukorv.length > 0 && <div>Kokku: {arvutaKogusumma()} €</div>}
     </div>
   )
 }

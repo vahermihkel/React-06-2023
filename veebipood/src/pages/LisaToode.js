@@ -29,6 +29,9 @@ import { ToastContainer, toast } from 'react-toastify';
 function LisaToode() {
   const [sonum, uuendaSonum] = useState("");
   const inputiLuger = useRef();
+  const hindRef = useRef();
+  const piltRef = useRef();
+  const aktiivneRef = useRef();
   // const kuupaev = new Date();
 
   // ES5   EchmaScript5
@@ -43,9 +46,22 @@ function LisaToode() {
       toast.error("Tühja nimetusega toodet ei saa lisada!");
     } else {
       uuendaSonum("Toode lisatud: " + inputiLuger.current.value);
-      tootedFailist.push(inputiLuger.current.value);
+      //tootedFailist.push(inputiLuger.current.value);
+      
+      tootedFailist.push(
+        {
+          "nimi": inputiLuger.current.value, 
+          "hind": Number(hindRef.current.value), // väärtus tuleb numbrina 
+          "aktiivne": aktiivneRef.current.checked, // väärtus tuleb booleanina 
+          "pilt": piltRef.current.value
+        }
+      );
+      
       toast.success("Edukalt " + inputiLuger.current.value +  " lisatud!");
       inputiLuger.current.value = "";
+      hindRef.current.value = "";
+      piltRef.current.value = "";
+      aktiivneRef.current.checked = false;
       // lisa andmebaasi
     }
   }
@@ -55,6 +71,12 @@ function LisaToode() {
       <div>{sonum}</div>
       <label>Toote nimi</label> <br />
       <input ref={inputiLuger} type="text" /> <br />
+      <label>Toote hind</label> <br />
+      <input ref={hindRef} type="number" /> <br />
+      <label>Toote pilt</label> <br />
+      <input ref={piltRef} type="text" /> <br />
+      <label>Toote aktiivsus</label> <br />
+      <input ref={aktiivneRef} type="checkbox" /> <br />
       <button onClick={lisa}>Lisa</button> <br />
       <ToastContainer 
         position="bottom-right"
