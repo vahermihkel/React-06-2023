@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import productsFromFile from "../../data/products.json"
 
 function EditProduct() {
@@ -17,10 +17,22 @@ function EditProduct() {
   const categoryRef = useRef();
   const descriptionRef = useRef();
   const activeRef = useRef();
+  const navigate = useNavigate(); 
+  // 1. use eesliidesega 2. alati impordin 3. sulud lõpus 4. ei tohi funktsiooni sees 5. ei tohi olla dünaamika
+  // hook - Reacti erikood
 
-  const edit = () => {
+  const edit = () => {                          //      76139657   ===    "76139657"
     const index = productsFromFile.findIndex(product => product.id === Number(productId));
-    productsFromFile[index] = {};
+    productsFromFile[index] = {
+      "id": Number(idRef.current.value), // "76139657" ---> 76139657
+      "image": imageRef.current.value,
+      "name": nameRef.current.value,
+      "price": Number(priceRef.current.value),
+      "description": descriptionRef.current.value,
+      "category": categoryRef.current.value,
+      "active": activeRef.current.checked // .value ---> "on"   .checked ---> true / false
+    };
+    navigate("/admin/maintain-products");
   }
 
   if (found === undefined) { // returniga leht lõppeb

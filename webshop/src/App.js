@@ -7,7 +7,7 @@ import MaintainProducts from './pages/admin/MaintainProducts';
 import MaintainCategories from './pages/admin/MaintainCategories';
 import MaintainShops from './pages/admin/MaintainShops';
 import HomePage from './pages/global/HomePage';
-import ContactUs from './pages/global/ContactUs';
+import { ContactUs } from './pages/global/ContactUs';
 import Shops from './pages/global/Shops';
 import Cart from './pages/global/Cart';
 import SingleProduct from './pages/global/SingleProduct';
