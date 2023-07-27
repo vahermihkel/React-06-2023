@@ -25,6 +25,8 @@ function App() {
 
   const { t, i18n } = useTranslation();
 
+  // funktsiooni taaskasutamine, funktsiooni parameetri saatmine
+
   const changeLangEn = () => {
     i18n.changeLanguage("en");
     localStorage.setItem("language", "en");
@@ -62,7 +64,7 @@ function App() {
         <Route path="/contact" element={ <ContactUs /> } />
         <Route path="/shops" element={ <Shops /> } />
         <Route path="/cart" element={ <Cart /> } />
-        <Route path="/product" element={ <SingleProduct /> } />
+        <Route path="/product/:productId" element={ <SingleProduct /> } />
         <Route path="/admin" element={ <AdminHome /> } />
         <Route path="/admin/add-product" element={ <AddProduct /> } />
         <Route path="/admin/edit-product/:productId" element={ <EditProduct /> } />

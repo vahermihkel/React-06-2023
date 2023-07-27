@@ -1,6 +1,6 @@
 import React from 'react'
 import productsFromFile from '../../data/products.json'
-import cartFile from '../../data/cart.json' // relatiivne import
+// import cartFile from '../../data/cart.json' // relatiivne import
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 // import { Slide, ToastContainer, toast } from 'react-toastify';
@@ -36,8 +36,48 @@ function HomePage() {
   }
 
   const addToCart = (product) => {
-    cartFile.push(product);
+    // cartFile.push(product);
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]"); // localStoragest tuleb ALATI SÕNA
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart)); // localStoragesse tuleb saata ALATI sõna
     // toast.success(product.name + ' lisatud!');
+
+    // kui tahame salvestada ostukorvi localStoragesse, siis me ei tohi asendada uue tootega vana toodet
+    // 1. võtame vanad väärtused  ---->   localStorage.getItem("VÕTI");
+    // 2. võtame jutumärgid maha ----> JSON.parse()
+    // 3. lisan vanadele väärtustele toote juurde ---->   VANAD.push(LISATAV_UUS)
+    // 4. lisame jutumärgid tagasi -----> JSON.stringify()
+    // 5. uue ostukorvi sisu tagasi lisama ---->   localStorage.setItem("VÕTI", UUENENUD_VÄÄRTUSED)
+  }
+
+  // const filterByCategoryStickVacuum = () => {
+  //   const result = productsFromFile.filter(product => product.category === "stick vacuum");
+  //   setProducts(result);
+  // }
+
+  // const filterByCategoryRobotVacuum = () => {
+  //   const result = productsFromFile.filter(product => product.category === "robot vacuum");
+  //   setProducts(result);
+  // }
+
+  // const filterByCategoryEbay = () => {
+  //   const result = productsFromFile.filter(product => product.category === "ebay");
+  //   setProducts(result);
+  // }
+
+  // const filterByCategoryLed = () => {
+  //   const result = productsFromFile.filter(product => product.category === "led");
+  //   setProducts(result);
+  // }
+
+  // const filterByCategorySolar = () => {
+  //   const result = productsFromFile.filter(product => product.category === "solar");
+  //   setProducts(result);
+  // }
+
+  const filterByCategory = (categoryClicked) => {
+    const result = productsFromFile.filter(product => product.category === categoryClicked);
+    setProducts(result);
   }
 
   return (
@@ -48,6 +88,13 @@ function HomePage() {
       <Button onClick={() => sortPriceAscending()}>{t('sort-price-increasing')}</Button>
       <Button onClick={() => sortPriceDecending()}>{t('sort-price-decreasing')}</Button>
       <br /><br />
+      <button onClick={() => filterByCategory("stick vacuum")}>stick vacuum</button>
+      <button onClick={() => filterByCategory("robot vacuum")}>robot vacuum</button>
+      <button onClick={() => filterByCategory("ebay")}>ebay</button>
+      <button onClick={() => filterByCategory("led")}>led</button>
+      <button onClick={() => filterByCategory("solar")}>solar</button>
+
+      <div>Kokku: {products.length} tk</div>
 
       {products.map((product, index) =>
         <div key={index}>
@@ -55,7 +102,7 @@ function HomePage() {
           <div>{product.name}</div>
           <div>{product.price}</div>
           <Button onClick={() => addToCart(product)}>{t('add-to-cart')}</Button>
-          <Link to={'/product/' + index}>
+          <Link to={'/product/' + product.id}>
             <Button>{t('product-details')}</Button>
           </Link>
           <br /><br />
