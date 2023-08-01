@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 // import cartFromFile from '../../data/cart.json'
 import { Slide, ToastContainer, toast } from 'react-toastify';
+import "../../css/Cart.css";
 
 import { useTranslation } from 'react-i18next';
 
@@ -54,14 +55,15 @@ function Cart() {
       {cart.length > 0 && <div className='bold-heading'>{t('products-in-cart')}: {cart.length}</div>}
       {cart.length > 0 && <Button variant='danger' onClick={emptyCart}>{t('empty-cart')}</Button>}<br /><br />
       {cart.map((cartProduct, index) =>
-        <div key={index}>
-          {cartProduct.product.name} (id: {cartProduct.product.id}) - {cartProduct.product.price.toFixed(2)}
-          <br />
-          <button onClick={() => decreaseQuantity(index)}>-</button>
-          <span>{cartProduct.quantity} pcs</span>
-          <button onClick={() => increaseQuantity(index)}>+</button>
-          <div>{(cartProduct.product.price * cartProduct.quantity).toFixed(2)} €</div>
-          <Button variant='danger' onClick={() => removeProduct(index)}>{t('remove')}</Button>
+        <div key={index} className="product">
+          <img className="image" src={cartProduct.product.image} alt="" />
+          <div className="name">{cartProduct.product.name}</div>
+          <div className="price">{cartProduct.product.price.toFixed(2)}</div>
+          <button className="button" onClick={() => decreaseQuantity(index)}>-</button>
+          <span className="quantity">{cartProduct.quantity} pcs</span>
+          <button className="button" onClick={() => increaseQuantity(index)}>+</button>
+          <div className="sum">{(cartProduct.product.price * cartProduct.quantity).toFixed(2)} €</div>
+          <Button className="button" variant='danger' onClick={() => removeProduct(index)}>{t('remove')}</Button>
         </div>
       )}
       {cart.length > 0 &&  <div className='bold-heading' >{t('total-sum')}: {cartSum()} €</div> }
