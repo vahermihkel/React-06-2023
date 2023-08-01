@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 // import cartFromFile from '../../data/cart.json'
 import { Slide, ToastContainer, toast } from 'react-toastify';
@@ -12,6 +12,16 @@ function Cart() {
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart") || "[]"));
 
   const { t } = useTranslation();
+
+  // API päring võtab aega. senikaua kuni API päring saab valmis, on väärtuseks see, 
+  //        mis on useState sulgude sees
+  const [parcelMachines, setParcelMachines] = useState([]);
+
+  useEffect(() => { // useEffecti kasutame kui lehe tulles tehakse API päring
+    fetch("https://www.omniva.ee/locations.json") // URL, kuhu päring tehakse
+      .then(res => res.json()) // response, kogu tagastus koos metaandmetega (nt staatuskood)
+      .then(json => setParcelMachines(json)) // json sees on lehekülje sisu (sama mida näen veebisaidil)
+  }, []);
 
   const emptyCart = () => {
     cart.splice(0);
@@ -59,13 +69,16 @@ function Cart() {
           <img className="image" src={cartProduct.product.image} alt="" />
           <div className="name">{cartProduct.product.name}</div>
           <div className="price">{cartProduct.product.price.toFixed(2)}</div>
-          <button className="button" onClick={() => decreaseQuantity(index)}>-</button>
-          <span className="quantity">{cartProduct.quantity} pcs</span>
-          <button className="button" onClick={() => increaseQuantity(index)}>+</button>
+          <div className="quantity">
+            <img className="button" onClick={() => decreaseQuantity(index)} src="/minus.png" alt="" />
+            <span>{cartProduct.quantity} pcs</span>
+            <img className="button" onClick={() => increaseQuantity(index)} src="/plus.png" alt="" />
+          </div>
           <div className="sum">{(cartProduct.product.price * cartProduct.quantity).toFixed(2)} €</div>
-          <Button className="button" variant='danger' onClick={() => removeProduct(index)}>{t('remove')}</Button>
+          <img className="button" onClick={() => removeProduct(index)} src="remove.png" alt="" />
         </div>
       )}
+      <select>{parcelMachines.filter(pm => pm.A0_NAME === "EE").map(pm => <option>{pm.NAME}</option>)}</select>
       {cart.length > 0 &&  <div className='bold-heading' >{t('total-sum')}: {cartSum()} €</div> }
       <ToastContainer
         position="bottom-center"
