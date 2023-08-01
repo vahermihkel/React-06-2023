@@ -1,0 +1,26 @@
+[
+  {
+    "kogus": 4,
+    "toode": {
+      "id": 59074235,
+      "image": "https://i.ebayimg.com/thumbs/images/g/pwEAAOSwl3diZtP2/s-l225.webp",
+      "name": "GTTVO BR151 WIFI",
+      "price": 65.99,
+      "description": "GTTVO BR151 WIFI Robot Vacuum Cleaner Mop 2 in 1 Mopping Robotic Vacuum Combo",
+      "category": "robot vacuum",
+      "active": true
+    }
+  },
+  {
+    "quantity": 1,
+    "product": {
+      "id": 17483418,
+      "image": "https://i.ebayimg.com/thumbs/images/g/ipIAAOSwCWxjCQpV/s-l225.webp",
+      "name": "Shark EZ Robot",
+      "price": 299.99,
+      "description": "Shark EZ Robot Vacuum Cleaner w/45 day XL Self-Empty Base Brand New Free Shippin",
+      "category": "robot vacuum",
+      "active": true
+    }
+  }
+]

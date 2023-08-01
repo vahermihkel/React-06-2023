@@ -18,6 +18,23 @@ function Cart() {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 
+  const decreaseQuantity = (index) => {
+    // cart[index].quantity = cart[index].quantity - 1;
+    cart[index].quantity--;
+    if (cart[index].quantity === 0) {
+      cart.splice(index, 1);
+    }
+    setCart(cart.slice());
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
+  const increaseQuantity = (index) => {
+    // cart[index].quantity = cart[index].quantity + 1;
+    cart[index].quantity++;
+    setCart(cart.slice());
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
   const removeProduct = (index) => {
     cart.splice(index, 1);
     setCart(cart.slice());
@@ -27,7 +44,7 @@ function Cart() {
 
   const cartSum = () => {
     let sum = 0;
-    cart.forEach(product => sum += product.price);
+    cart.forEach(cartProduct => sum += cartProduct.product.price * cartProduct.quantity);
     return sum.toFixed(2);
   }
  
@@ -35,14 +52,19 @@ function Cart() {
     <div>
       {cart.length === 0 && <div className='bold-heading'>{t('cart-is-empty')}</div>}
       {cart.length > 0 && <div className='bold-heading'>{t('products-in-cart')}: {cart.length}</div>}
-      {cart.length > 0 &&  <div className='bold-heading' >{t('total-sum')}: {cartSum()} €</div> }
       {cart.length > 0 && <Button variant='danger' onClick={emptyCart}>{t('empty-cart')}</Button>}<br /><br />
-      {cart.map((product, index) =>
+      {cart.map((cartProduct, index) =>
         <div key={index}>
-          {product.name} (id: {product.id}) - {product.price}
+          {cartProduct.product.name} (id: {cartProduct.product.id}) - {cartProduct.product.price.toFixed(2)}
+          <br />
+          <button onClick={() => decreaseQuantity(index)}>-</button>
+          <span>{cartProduct.quantity} pcs</span>
+          <button onClick={() => increaseQuantity(index)}>+</button>
+          <div>{(cartProduct.product.price * cartProduct.quantity).toFixed(2)} €</div>
           <Button variant='danger' onClick={() => removeProduct(index)}>{t('remove')}</Button>
         </div>
       )}
+      {cart.length > 0 &&  <div className='bold-heading' >{t('total-sum')}: {cartSum()} €</div> }
       <ToastContainer
         position="bottom-center"
         autoClose={3000}

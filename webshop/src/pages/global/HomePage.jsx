@@ -35,10 +35,22 @@ function HomePage() {
     setProducts(products.slice());
   }
 
-  const addToCart = (product) => {
+  const addToCart = (productClicked) => {
     // cartFile.push(product);
     const cart = JSON.parse(localStorage.getItem("cart") || "[]"); // localStoragest tuleb ALATI SÕNA
-    cart.push(product);
+    const index = cart.findIndex(cartProduct => cartProduct.product.id === productClicked.id);
+    //                .findIndex()    0 või suurem arv                -1
+    //                .find()          {}                           undefined
+    //                .filter()      .length on suurem kui 0      .length on 0
+    if (index >= 0) { // index !== -1
+      // KUI ON OSTUKORVIS, SIIS SUURENDAME KOGUST
+      // cart[index] = {"quantity": cart[index].quantity+1, "product": productClicked}
+      // cart[index].quantity = cart[index].quantity + 1;
+      // cart[index].quantiy += 1;
+      cart[index].quantity++;
+    } else {
+      cart.push({"quantity": 1, "product": productClicked});
+    }
     localStorage.setItem("cart", JSON.stringify(cart)); // localStoragesse tuleb saata ALATI sõna
     // toast.success(product.name + ' lisatud!');
 
@@ -100,7 +112,7 @@ function HomePage() {
         <div key={index}>
           <img src={product.image} alt='' />
           <div>{product.name}</div>
-          <div>{product.price}</div>
+          <div>{product.price.toFixed(2)}</div>
           <Button onClick={() => addToCart(product)}>{t('add-to-cart')}</Button>
           <Link to={'/product/' + product.id}>
             <Button>{t('product-details')}</Button>
