@@ -1,25 +1,41 @@
-import productsFromFile from '../../data/products.json'
-import { useRef, useState } from 'react';
+// import productsFromFile from '../../data/products.json'
+import { useEffect, useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import config from "../../data/config.json";
 
 
 function MaintainProducts() {
 
-  const [products, setProducts] = useState(productsFromFile);
+  // const [products, setProducts] = useState(productsFromFile);
+  const [products, setProducts] = useState([]); // väljakuvatav seis
+  const [dbProducts, setDbProducts] = useState([]); // andmebaasiseis
 
   const { t } = useTranslation();
   const searchedRef = useRef();
 
+  useEffect(() => {
+    // fetch(config.categoryUrl)
+    //   .then(res => res.json())
+    //   .then(data => setCategories(data || []));
+
+    fetch(config.productsUrl)
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data || []); // siin hiljem teen veel setProducts ehk muudan products muutujat
+        setDbProducts(data || []); // seda rohkem ei tee üle terve lehe
+      });
+  }, []);
+
   const deleteProduct = (index) => {
     // const index = productsFromFile.findIndex(product => product.id === productId);
-    productsFromFile.splice(index, 1);
-    setProducts(productsFromFile.slice());
+    dbProducts.splice(index, 1);
+    setProducts(dbProducts.slice());
   }
 
   const searchFromProducts = () => {
-    const result = productsFromFile.filter(product => 
+    const result = dbProducts.filter(product => 
       product.name.toLowerCase().includes(searchedRef.current.value.toLowerCase()));
     setProducts(result);
   } // HILJEM ID järgi otsimise

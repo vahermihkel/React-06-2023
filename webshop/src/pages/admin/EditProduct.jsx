@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
 import productsFromFile from "../../data/products.json"
+import config from "../../data/config.json";
 
 function EditProduct() {
   // productId <-- peab olema TÄPSELT samamoodi kirjutatud nagu app.js failist URLis :kooloni järel
@@ -21,6 +22,13 @@ function EditProduct() {
   // 1. use eesliidesega 2. alati impordin 3. sulud lõpus 4. ei tohi funktsiooni sees 5. ei tohi olla dünaamika
   // hook - Reacti erikood
   const [idUnique, setIdUnique] = useState(true);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetch(config.categoryUrl)
+      .then(res => res.json())
+      .then(data => setCategories(data || []));
+  }, []);
 
   const edit = () => {                          //      76139657   ===    "76139657"
     const index = productsFromFile.findIndex(product => product.id === Number(productId));
@@ -73,6 +81,10 @@ function EditProduct() {
     return <div>Toodet ei leitud</div> 
   }
 
+  if (categories.length === 0) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div>
       {idUnique === false && <div>Sisestatud ID ei ole unikaalne!</div>}
@@ -85,7 +97,10 @@ function EditProduct() {
       <label>Image</label> <br />
       <input defaultValue={found.image} ref={imageRef} type="text" /> <br />
       <label>Category</label> <br />
-      <input defaultValue={found.category} ref={categoryRef} type="text" /> <br />
+      {/* <input defaultValue={found.category} ref={categoryRef} type="text" /> <br /> */}
+      <select ref={categoryRef} defaultValue={found.category}>
+        {categories.map(category => <option key={category.name}>{category.name}</option>)}
+      </select> <br />
       <label>Description</label> <br />
       <input defaultValue={found.description} ref={descriptionRef} type="text" /> <br />
       <label>Active</label> <br />

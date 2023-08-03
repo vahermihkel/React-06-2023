@@ -1,0 +1,5 @@
+{
+  "categoryUrl": "https://mihkel-react-webshop-06-2023-default-rtdb.europe-west1.firebasedatabase.app/categories.json",
+  "shopsUrl": "https://mihkel-react-webshop-06-2023-default-rtdb.europe-west1.firebasedatabase.app/shops.json",
+  "productsUrl": "https://mihkel-react-webshop-06-2023-default-rtdb.europe-west1.firebasedatabase.app/products.json"
+}

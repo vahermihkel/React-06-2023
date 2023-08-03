@@ -1,19 +1,35 @@
 import React from 'react'
-import productsFromFile from '../../data/products.json'
+// import productsFromFile from '../../data/products.json'
 // import cartFile from '../../data/cart.json' // relatiivne import
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 // import { Slide, ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
+import config from "../../data/config.json";
 
 function HomePage() {
   // mul peab olema täpselt nii mitu tk kui paremal pool olev hook nõuab
-  const [products, setProducts] = useState(productsFromFile);
+  const [products, setProducts] = useState([]); // väljakuvatav seis
+  const [dbProducts, setDbProducts] = useState([]); // andmebaasiseis
+  const [categories, setCategories] = useState([]);
 
   // loogelised tähistavad siin et ma saan valida mitu tk
   const { t } = useTranslation();
+
+  useEffect(() => {
+    fetch(config.categoryUrl)
+      .then(res => res.json())
+      .then(data => setCategories(data || []));
+
+    fetch(config.productsUrl)
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data || []); // siin hiljem teen veel setProducts ehk muudan products muutujat
+        setDbProducts(data || []); // seda rohkem ei tee üle terve lehe
+      });
+  }, []);
 
   const sortAZ = () => {
     products.sort((a, b) => a.name.localeCompare(b.name));
@@ -87,8 +103,12 @@ function HomePage() {
   //   setProducts(result);
   // }
 
+  // products <--- väljanäidatav 1000toodet, 240toodet, 6toodet, 100toodet
+  // setProducts <--- panen products sisse kõik tooted kellel on kategooria "solar"
+
   const filterByCategory = (categoryClicked) => {
-    const result = productsFromFile.filter(product => product.category === categoryClicked);
+                  // !!!!
+    const result = dbProducts.filter(product => product.category === categoryClicked);
     setProducts(result);
   }
 
@@ -100,11 +120,16 @@ function HomePage() {
       <Button onClick={() => sortPriceAscending()}>{t('sort-price-increasing')}</Button>
       <Button onClick={() => sortPriceDecending()}>{t('sort-price-decreasing')}</Button>
       <br /><br />
-      <button onClick={() => filterByCategory("stick vacuum")}>stick vacuum</button>
+      {/* <button onClick={() => filterByCategory("stick vacuum")}>stick vacuum</button>
       <button onClick={() => filterByCategory("robot vacuum")}>robot vacuum</button>
       <button onClick={() => filterByCategory("ebay")}>ebay</button>
       <button onClick={() => filterByCategory("led")}>led</button>
-      <button onClick={() => filterByCategory("solar")}>solar</button>
+      <button onClick={() => filterByCategory("solar")}>solar</button> */}
+      {categories.map(category => 
+        <button key={category.name} onClick={() => filterByCategory(category.name)}>
+          {category.name}
+        </button>
+      )}
 
       <div>Kokku: {products.length} tk</div>
 

@@ -78,7 +78,7 @@ function Cart() {
           <img className="button" onClick={() => removeProduct(index)} src="remove.png" alt="" />
         </div>
       )}
-      <select>{parcelMachines.filter(pm => pm.A0_NAME === "EE").map(pm => <option>{pm.NAME}</option>)}</select>
+      <select>{parcelMachines.filter(pm => pm.A0_NAME === "EE").map(pm => <option key={pm.NAME}>{pm.NAME}</option>)}</select>
       {cart.length > 0 &&  <div className='bold-heading' >{t('total-sum')}: {cartSum()} €</div> }
       <ToastContainer
         position="bottom-center"

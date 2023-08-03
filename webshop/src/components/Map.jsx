@@ -14,6 +14,9 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 function Map(props) { 
 
+  // uef
+  // 
+
   return (
   <div>
 
@@ -36,7 +39,7 @@ function Map(props) {
       <Marker position={[58.3776, 26.7303]}>
         <Popup>
           Tasku keskus. <br /> Avatud 9-23 <br />
-          <a target='_blank' rel="noreferrer" href="https://www.google.com/maps/@58.3780258,26.7310443,17z?entry=ttu">Turu tn 2</a>
+          {/* <a target='_blank' rel="noreferrer" href="https://www.google.com/maps/@58.3780258,26.7310443,17z?entry=ttu">Turu tn 2</a> */}
         </Popup>
       </Marker>
     </MapContainer>
