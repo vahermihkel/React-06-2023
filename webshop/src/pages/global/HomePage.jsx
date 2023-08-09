@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
 import config from "../../data/config.json";
+import SortButtons from '../../components/SortButtons';
 
 function HomePage() {
   // mul peab olema täpselt nii mitu tk kui paremal pool olev hook nõuab
@@ -30,26 +31,6 @@ function HomePage() {
         setDbProducts(data || []); // seda rohkem ei tee üle terve lehe
       });
   }, []);
-
-  const sortAZ = () => {
-    products.sort((a, b) => a.name.localeCompare(b.name));
-    setProducts(products.slice());
-  }
-
-  const sortZA = () => {
-    products.sort((a, b) => b.name.localeCompare(a.name));
-    setProducts(products.slice());
-  }
-
-  const sortPriceAscending = () => {
-    products.sort((a, b) => a.price - b.price);
-    setProducts(products.slice());
-  }
-
-  const sortPriceDecending = () => {
-    products.sort((a, b) => b.price - a.price);
-    setProducts(products.slice());
-  }
 
   const addToCart = (productClicked) => {
     // cartFile.push(product);
@@ -115,10 +96,10 @@ function HomePage() {
   return (
     <div>
       <div className='bold-heading'>{t('products')}</div><br />
-      <Button onClick={() => sortAZ()}>{t('sort-az')}</Button>
-      <Button onClick={() => sortZA()}>{t('sort-za')}</Button><div>  </div>
-      <Button onClick={() => sortPriceAscending()}>{t('sort-price-increasing')}</Button>
-      <Button onClick={() => sortPriceDecending()}>{t('sort-price-decreasing')}</Button>
+      <SortButtons 
+          products={products}
+          setProducts={setProducts}
+      />
       <br /><br />
       {/* <button onClick={() => filterByCategory("stick vacuum")}>stick vacuum</button>
       <button onClick={() => filterByCategory("robot vacuum")}>robot vacuum</button>

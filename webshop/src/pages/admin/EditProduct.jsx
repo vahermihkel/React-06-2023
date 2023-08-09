@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
-import productsFromFile from "../../data/products.json"
+// import productsFromFile from "../../data/products.json"
 import config from "../../data/config.json";
 
 function EditProduct() {
@@ -10,7 +10,6 @@ function EditProduct() {
    // localhost:3000/admin/edit-product?productId=312312&productCategory=kategooria
   // .find()   <--  teeb tsükli, otsib kõikide toodete seast ja leiab õige toote üles tema omaduse järgi
   // .find() leiab alati kõige esimese toote kellele tingimus klapib
-  const found = productsFromFile.find(product => product.id === Number(productId));
   const idRef = useRef();
   const nameRef = useRef();
   const priceRef = useRef();
@@ -23,16 +22,26 @@ function EditProduct() {
   // hook - Reacti erikood
   const [idUnique, setIdUnique] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const found = products.find(product => product.id === Number(productId));
 
   useEffect(() => {
     fetch(config.categoryUrl)
       .then(res => res.json())
       .then(data => setCategories(data || []));
+
+    fetch(config.productsUrl)
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data || []);
+        setLoading(false);
+      });
   }, []);
 
   const edit = () => {                          //      76139657   ===    "76139657"
-    const index = productsFromFile.findIndex(product => product.id === Number(productId));
-    productsFromFile[index] = {
+    const index = products.findIndex(product => product.id === Number(productId));
+    products[index] = {
       "id": Number(idRef.current.value), // "76139657" ---> 76139657
       "image": imageRef.current.value,
       "name": nameRef.current.value,
@@ -41,7 +50,9 @@ function EditProduct() {
       "category": categoryRef.current.value,
       "active": activeRef.current.checked // .value ---> "on"   .checked ---> true / false
     };
-    navigate("/admin/maintain-products");
+    // kui on fetch(), siis lubatakse edasi minna -> kood läheb lõpuni, aga fetch tuleb tagantjärgi 
+    fetch(config.productsUrl, {method: "PUT", body: JSON.stringify(products)})
+      .then(() => navigate("/admin/maintain-products"));
   }
 
   // 100 inimest
@@ -67,7 +78,7 @@ function EditProduct() {
       setIdUnique(true); // ID korras
       return; // <---- return katkestab ka funktsiooni edasimineku
     }
-    const result = productsFromFile.filter(product => product.id === Number(idRef.current.value));
+    const result = products.filter(product => product.id === Number(idRef.current.value));
     if (result.length === 0) {
         // KELLELGI EI OLE SELLIST ID'd
         setIdUnique(true);
@@ -77,13 +88,17 @@ function EditProduct() {
     }
   }
 
+  if (isLoading === true) {
+    return <div>Loading...</div>
+  }
+
   if (found === undefined) { // returniga leht lõppeb
     return <div>Toodet ei leitud</div> 
   }
 
-  if (categories.length === 0) {
-    return <div>Loading...</div>
-  }
+  // if (categories.length === 0) {
+  //   return <div>Loading...</div>
+  // }
 
   return (
     <div>

@@ -1,27 +1,19 @@
 import React from 'react'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 // import cartFromFile from '../../data/cart.json'
 import { Slide, ToastContainer, toast } from 'react-toastify';
 import "../../css/Cart.css";
 
 import { useTranslation } from 'react-i18next';
+import ParcelMachines from '../../components/ParcelMachines';
+import Payment from '../../components/Payment';
 
 function Cart() {
 
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart") || "[]"));
 
   const { t } = useTranslation();
-
-  // API päring võtab aega. senikaua kuni API päring saab valmis, on väärtuseks see, 
-  //        mis on useState sulgude sees
-  const [parcelMachines, setParcelMachines] = useState([]);
-
-  useEffect(() => { // useEffecti kasutame kui lehe tulles tehakse API päring
-    fetch("https://www.omniva.ee/locations.json") // URL, kuhu päring tehakse
-      .then(res => res.json()) // response, kogu tagastus koos metaandmetega (nt staatuskood)
-      .then(json => setParcelMachines(json)) // json sees on lehekülje sisu (sama mida näen veebisaidil)
-  }, []);
 
   const emptyCart = () => {
     cart.splice(0);
@@ -58,6 +50,8 @@ function Cart() {
     cart.forEach(cartProduct => sum += cartProduct.product.price * cartProduct.quantity);
     return sum.toFixed(2);
   }
+
+  
  
   return (
     <div>
@@ -78,8 +72,12 @@ function Cart() {
           <img className="button" onClick={() => removeProduct(index)} src="remove.png" alt="" />
         </div>
       )}
-      <select>{parcelMachines.filter(pm => pm.A0_NAME === "EE").map(pm => <option key={pm.NAME}>{pm.NAME}</option>)}</select>
-      {cart.length > 0 &&  <div className='bold-heading' >{t('total-sum')}: {cartSum()} €</div> }
+      {cart.length > 0 &&  
+        <div>
+          <div className='bold-heading' >{t('total-sum')}: {cartSum()} €</div>
+          <ParcelMachines />
+          <Payment sum={cartSum()} />
+        </div> }
       <ToastContainer
         position="bottom-center"
         autoClose={3000}

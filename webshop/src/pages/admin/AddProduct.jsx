@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import productsFromFile from "../../data/products.json";
+// import productsFromFile from "../../data/products.json";
 import { ToastContainer, toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-bootstrap";
@@ -18,18 +18,26 @@ function AddProduct() {
   const toastMessageFail = t("product-not-added");
   const [idUnique, setIdUnique] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     fetch(config.categoryUrl)
       .then(res => res.json())
       .then(data => setCategories(data || []));
+
+    fetch(config.productsUrl)
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data || []);
+        // setLoading(false);
+      });
   }, []);
 
   const addNew = () => {
     if (nameRef.current.value === "" || priceRef.current.value < 0) {
       toast.error(toastMessageFail);
     } else {
-      productsFromFile.push({
+      products.push({
         id: Number(idRef.current.value),
         image: imageRef.current.value,
         name: nameRef.current.value,
@@ -38,12 +46,15 @@ function AddProduct() {
         category: categoryRef.current.value,
         active: activeRef.current.checked,
       });
-      toast.success(toastMessageSuccess);  
+      
+      fetch(config.productsUrl, {method: "PUT", body: JSON.stringify(products)})
+        .then(() => toast.success(toastMessageSuccess));
+    
     }
   };
 
   const checkIdUniqueness = () => {
-    const result = productsFromFile.filter(product => product.id === Number(idRef.current.value));
+    const result = products.filter(product => product.id === Number(idRef.current.value));
     if (result.length === 0) {
         // KELLELGI EI OLE SELLIST ID'd
         setIdUnique(true);

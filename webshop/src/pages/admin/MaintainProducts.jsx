@@ -28,15 +28,20 @@ function MaintainProducts() {
       });
   }, []);
 
-  const deleteProduct = (index) => {
-    // const index = productsFromFile.findIndex(product => product.id === productId);
+  const deleteProduct = (productId) => {
+    const index = dbProducts.findIndex(product => product.id === productId);
     dbProducts.splice(index, 1);
-    setProducts(dbProducts.slice());
+    // setProducts(dbProducts.slice());
+    searchFromProducts();
+    fetch(config.productsUrl, {method: "PUT", body: JSON.stringify(dbProducts)});
   }
 
   const searchFromProducts = () => {
     const result = dbProducts.filter(product => 
-      product.name.toLowerCase().includes(searchedRef.current.value.toLowerCase()));
+      product.name.toLowerCase().includes(searchedRef.current.value.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchedRef.current.value.toLowerCase()) || 
+      product.id.toString().includes(searchedRef.current.value)
+      );
     setProducts(result);
   } // HILJEM ID järgi otsimise
 
@@ -47,7 +52,7 @@ function MaintainProducts() {
       <div className='bold-heading'>{t('maintain-products')}</div><br />
       <input ref={searchedRef} onChange={searchFromProducts} type="text" />
       <div>Kokku: {products.length} tk</div>
-      {products.map((product, index) =>
+      {products.map((product) =>
         <div key={product.id}>
           <img src={product.image} alt='' />
           <div>{product.id}</div>
@@ -56,7 +61,7 @@ function MaintainProducts() {
           <div>{product.category}</div>
           <div>{product.description}</div>
           <div>{product.active}</div>
-          <Button onClick={() => deleteProduct(index)}>Kustuta</Button><br /><br />
+          <Button onClick={() => deleteProduct(product.id)}>Kustuta</Button><br /><br />
           <Button as={Link} to={"/admin/edit-product/" + product.id}>Muuda</Button>
         </div>
       )}

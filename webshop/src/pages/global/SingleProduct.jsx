@@ -1,14 +1,31 @@
-import React from 'react'
-import productsFromFile from "../../data/products.json";
+import React, { useEffect, useState } from 'react'
+// import productsFromFile from "../../data/products.json";
 import { useParams } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import config from "../../data/config.json";
+
 
 function SingleProduct() {
   const {productId} = useParams(); // App.js  path="/product/:productId" element={<SingleProduct/>}
-  const found = productsFromFile.find(product => product.id === Number(productId));
   const {t} = useTranslation();
+  const [products, setProducts] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const found = products.find(product => product.id === Number(productId));
+
+  useEffect(() => {
+    fetch(config.productsUrl)
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data || []);
+        setLoading(false);
+      });
+  }, []);
+
+  if(isLoading === true) {
+    return <Spinner variant="success" />
+  }
 
   if(found === undefined) {
     return <div>{t("product-not-found")}</div>
