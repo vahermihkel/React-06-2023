@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import config from "../../data/config.json";
-
+import "../../css/MaintainProducts.css";
 
 function MaintainProducts() {
 
@@ -53,14 +53,13 @@ function MaintainProducts() {
       <input ref={searchedRef} onChange={searchFromProducts} type="text" />
       <div>Kokku: {products.length} tk</div>
       {products.map((product) =>
-        <div key={product.id}>
+        <div className={product.active === true ? "active" : "inactive"} key={product.id}>
           <img src={product.image} alt='' />
           <div>{product.id}</div>
           <div>{product.name}</div>
           <div>{product.price}</div>
           <div>{product.category}</div>
           <div>{product.description}</div>
-          <div>{product.active}</div>
           <Button onClick={() => deleteProduct(product.id)}>Kustuta</Button><br /><br />
           <Button as={Link} to={"/admin/edit-product/" + product.id}>Muuda</Button>
         </div>

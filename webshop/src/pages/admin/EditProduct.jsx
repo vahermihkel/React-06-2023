@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
 // import productsFromFile from "../../data/products.json"
 import config from "../../data/config.json";
+import { ToastContainer, toast } from "react-toastify";
 
 function EditProduct() {
   // productId <-- peab olema TÄPSELT samamoodi kirjutatud nagu app.js failist URLis :kooloni järel
@@ -39,7 +40,23 @@ function EditProduct() {
       });
   }, []);
 
-  const edit = () => {                          //      76139657   ===    "76139657"
+  const edit = () => { 
+    if (nameRef.current.value === "") {
+      toast.error("Tühja nimetusega ei saa toodet lisada!");
+      return;
+    } 
+    
+    if (priceRef.current.value < 0) {
+      toast.error("Negatiivse hinnaga ei saa toodet lisada!");
+      return;
+    } 
+
+    if (imageRef.current.value.includes(" ")) {
+      toast.error("Pildi URLs ei tohi tühikut olla!");
+      return;
+    } 
+    
+    //      76139657   ===    "76139657"
     const index = products.findIndex(product => product.id === Number(productId));
     products[index] = {
       "id": Number(idRef.current.value), // "76139657" ---> 76139657
@@ -121,6 +138,7 @@ function EditProduct() {
       <label>Active</label> <br />
       <input defaultChecked={found.active} ref={activeRef} type="checkbox" /> <br />
       <button disabled={idUnique === false} onClick={edit}>Muuda</button>
+      <ToastContainer position="bottom-right" autoClose={4000} theme="dark" />
     </div>
   )
 }

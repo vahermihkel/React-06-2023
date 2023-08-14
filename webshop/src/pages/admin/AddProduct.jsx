@@ -15,7 +15,7 @@ function AddProduct() {
   const activeRef = useRef();
   const {t} = useTranslation();
   const toastMessageSuccess = t("product-added");
-  const toastMessageFail = t("product-not-added");
+  // const toastMessageFail = t("product-not-added");
   const [idUnique, setIdUnique] = useState(true);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -34,23 +34,33 @@ function AddProduct() {
   }, []);
 
   const addNew = () => {
-    if (nameRef.current.value === "" || priceRef.current.value < 0) {
-      toast.error(toastMessageFail);
-    } else {
-      products.push({
-        id: Number(idRef.current.value),
-        image: imageRef.current.value,
-        name: nameRef.current.value,
-        price: Number(priceRef.current.value),
-        description: descriptionRef.current.value,
-        category: categoryRef.current.value,
-        active: activeRef.current.checked,
-      });
-      
-      fetch(config.productsUrl, {method: "PUT", body: JSON.stringify(products)})
-        .then(() => toast.success(toastMessageSuccess));
+    if (nameRef.current.value === "") {
+      toast.error("Tühja nimetusega ei saa toodet lisada!");
+      return;
+    } 
     
-    }
+    if (priceRef.current.value < 0) {
+      toast.error("Negatiivse hinnaga ei saa toodet lisada!");
+      return;
+    } 
+
+    if (imageRef.current.value.includes(" ")) {
+      toast.error("Pildi URLs ei tohi tühikut olla!");
+      return;
+    } 
+    
+    products.push({
+      id: Number(idRef.current.value),
+      image: imageRef.current.value,
+      name: nameRef.current.value,
+      price: Number(priceRef.current.value),
+      description: descriptionRef.current.value,
+      category: categoryRef.current.value,
+      active: activeRef.current.checked,
+    });
+    
+    fetch(config.productsUrl, {method: "PUT", body: JSON.stringify(products)})
+      .then(() => toast.success(toastMessageSuccess));
   };
 
   const checkIdUniqueness = () => {

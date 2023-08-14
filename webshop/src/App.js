@@ -1,5 +1,5 @@
 import './App.css';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import AddProduct from './pages/admin/AddProduct';
 import AdminHome from './pages/admin/AdminHome';
 import EditProduct from './pages/admin/EditProduct';
@@ -14,50 +14,16 @@ import SingleProduct from './pages/global/SingleProduct';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import NotFound from './pages/global/NotFound';
+import NavigationBar from './components/NavigationBar';
 
-import { useTranslation } from 'react-i18next';
 
 function App() {
 
-  const { t, i18n } = useTranslation();
-
-  // funktsiooni taaskasutamine, funktsiooni parameetri saatmine
-
-  const changeLangEn = () => {
-    i18n.changeLanguage("en");
-    localStorage.setItem("language", "en");
-  }
-
-  const changeLangEe = () => {
-    i18n.changeLanguage("ee");
-    localStorage.setItem("language", "ee");
-  }
 
   return (
     <div className="App">
-      <Navbar collapseOnSelect expand="lg" className="bg-body-secondary">
-        <Container>
-          <Navbar.Brand as={Link} to="/">Mihkel's webshop</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link as={Link} to="/admin">{t("admin")}</Nav.Link>
-              <Nav.Link as={Link} to="/shops">{t("shops")}</Nav.Link>
-              <Nav.Link as={Link} to="/contact">{t("contact")}</Nav.Link>
-            </Nav>
-            <Nav>
-              <img className="lang" src="/english.png" alt="" onClick={changeLangEn} />
-              <img className="lang" src="/estonian.png" alt="" onClick={changeLangEe} />
-              <Nav.Link as={Link} to="/login">{t("login")}</Nav.Link>
-              <Nav.Link as={Link} to="/cart">{t("cart")}</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <NavigationBar />
      
       <Routes>
         <Route path="/" element={ <HomePage /> } />
@@ -75,24 +41,21 @@ function App() {
         <Route path="/signup" element={ <Signup /> } />
         <Route path="*" element={ <NotFound /> } />
       </Routes>
+
+      {/* <div>FOOTER</div> */}
     </div>
   );
 }
 
 export default App;
 
-
-// 1. HomePage --> sorteerimise nupud
-// 2. MaintainProducts --> kustutamise nupp
-// 3. HomePage --> lisamine ostukorvi faili
-//    Cart --> failis ostukorvi toodete võtmine ja seejärel nuppudega
-//              lisamine, eemaldamine, tühjendamine, koguarvutus, dünaamika
-// 4. Lisada 3-4's keel
-// 5. Favicon, Google Fonts uus kirjastiil
-// 6. React-toastify ---> HomePage-s kui lisatakse ostukorvi, 
-//                        MaintainProducts kui kustutakse
-// 7. Tõlkeid juurde lisada
-// 8. LISADA PROJEKT FIREBASE-i (täpselt samamoodi nagu tegime)
-
-// 9. AddProduct ---> eesti keelse järgi
-// 10. SingleProduct ---> eesti keelse järgi
+// 13. 10.08 - dünaamiline CSS-ga, kontrolle inputile
+// KOJU: Nortali proovitöö
+//             context
+// 14. 15.08 - Sisselogimine/registreerumine API päringu kaudu
+//              , avalehele kujundust, halda-tooted kujundus, MUI
+// 15. 17.08 - URLi kaitset, TypeScript, CSS module, mobiilivaade, Karusell-galerii
+// 16. 22.08 - 
+// 17. 24.08 - Proovitöid, Nortali proovitöö
+//             Firebase-s: pilte üles laadida
+// 18. 07.09 - lõpuprojekt
