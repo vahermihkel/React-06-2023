@@ -3,7 +3,7 @@ import { Product } from "../../models/Product";
 
 interface FilterButtonsInterface {
   dbProducts: Product[],
-  setProducts: (value: Product[]) => {},
+  setProducts: (value: Product[]) => void,
   categories: Category[]
 }
 
