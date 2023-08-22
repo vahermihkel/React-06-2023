@@ -1,6 +1,13 @@
-import React from 'react'
+import { Category } from "../../models/Category";
+import { Product } from "../../models/Product";
 
-function FilterButtons(props) {
+interface FilterButtonsInterface {
+  dbProducts: Product[],
+  setProducts: (value: Product[]) => {},
+  categories: Category[]
+}
+
+function FilterButtons(props: FilterButtonsInterface) {
 
   // const filterByCategoryStickVacuum = () => {
   //   const result = productsFromFile.filter(product => product.category === "stick vacuum");
@@ -30,7 +37,7 @@ function FilterButtons(props) {
   // products <--- väljanäidatav 1000toodet, 240toodet, 6toodet, 100toodet
   // setProducts <--- panen products sisse kõik tooted kellel on kategooria "solar"
 
-  const filterByCategory = (categoryClicked) => {
+  const filterByCategory = (categoryClicked: string) => {
     const result = props.dbProducts.filter(product => product.category === categoryClicked);
     props.setProducts(result);
   }

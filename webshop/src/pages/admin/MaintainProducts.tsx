@@ -4,16 +4,17 @@ import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import config from "../../data/config.json";
-import "../../css/MaintainProducts.css";
+import styles from "../../css/MaintainProducts.module.css";
+import { Product } from '../../models/Product';
 
 function MaintainProducts() {
 
   // const [products, setProducts] = useState(productsFromFile);
-  const [products, setProducts] = useState([]); // väljakuvatav seis
-  const [dbProducts, setDbProducts] = useState([]); // andmebaasiseis
+  const [products, setProducts] = useState<Product[]>([]); // väljakuvatav seis
+  const [dbProducts, setDbProducts] = useState<Product[]>([]); // andmebaasiseis
 
   const { t } = useTranslation();
-  const searchedRef = useRef();
+  const searchedRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // fetch(config.categoryUrl)
@@ -28,7 +29,7 @@ function MaintainProducts() {
       });
   }, []);
 
-  const deleteProduct = (productId) => {
+  const deleteProduct = (productId: number) => {
     const index = dbProducts.findIndex(product => product.id === productId);
     dbProducts.splice(index, 1);
     // setProducts(dbProducts.slice());
@@ -37,10 +38,14 @@ function MaintainProducts() {
   }
 
   const searchFromProducts = () => {
+    const searchedInput = searchedRef.current;
+    if (!searchedInput) {
+      return;
+    }
     const result = dbProducts.filter(product => 
-      product.name.toLowerCase().includes(searchedRef.current.value.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchedRef.current.value.toLowerCase()) || 
-      product.id.toString().includes(searchedRef.current.value)
+      product.name.toLowerCase().includes(searchedInput.value.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchedInput.value.toLowerCase()) || 
+      product.id.toString().includes(searchedInput.value)
       );
     setProducts(result);
   } // HILJEM ID järgi otsimise
@@ -53,7 +58,7 @@ function MaintainProducts() {
       <input ref={searchedRef} onChange={searchFromProducts} type="text" />
       <div>Kokku: {products.length} tk</div>
       {products.map((product) =>
-        <div className={product.active === true ? "active" : "inactive"} key={product.id}>
+        <div className={product.active === true ? styles.active : styles.inactive} key={product.id}>
           <img src={product.image} alt='' />
           <div>{product.id}</div>
           <div>{product.name}</div>
@@ -61,7 +66,7 @@ function MaintainProducts() {
           <div>{product.category}</div>
           <div>{product.description}</div>
           <Button onClick={() => deleteProduct(product.id)}>Kustuta</Button><br /><br />
-          <Button as={Link} to={"/admin/edit-product/" + product.id}>Muuda</Button>
+          <Button as={Link as any} to={"/admin/edit-product/" + product.id}>Muuda</Button>
         </div>
       )}
 

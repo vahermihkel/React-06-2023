@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import AddProduct from './pages/admin/AddProduct';
 import AdminHome from './pages/admin/AdminHome';
 import EditProduct from './pages/admin/EditProduct';
@@ -16,10 +16,12 @@ import Signup from './pages/auth/Signup';
 
 import NotFound from './pages/global/NotFound';
 import NavigationBar from './components/NavigationBar';
+import { useContext } from 'react';
+import { AuthContext } from './store/AuthContext';
 
 
 function App() {
-
+  const { loggedIn } = useContext(AuthContext);
 
   return (
     <div className="App">
@@ -31,12 +33,15 @@ function App() {
         <Route path="/shops" element={ <Shops /> } />
         <Route path="/cart" element={ <Cart /> } />
         <Route path="/product/:productId" element={ <SingleProduct /> } />
-        <Route path="/admin" element={ <AdminHome /> } />
-        <Route path="/admin/add-product" element={ <AddProduct /> } />
-        <Route path="/admin/edit-product/:productId" element={ <EditProduct /> } />
-        <Route path="/admin/maintain-products" element={ <MaintainProducts /> } />
-        <Route path="/admin/maintain-categories" element={ <MaintainCategories /> } />
-        <Route path="/admin/maintain-shops" element={ <MaintainShops /> } />
+        {loggedIn === true && <>
+          <Route path="/admin" element={ <AdminHome /> } />
+          <Route path="/admin/add-product" element={ <AddProduct /> } />
+          <Route path="/admin/edit-product/:productId" element={ <EditProduct /> } />
+          <Route path="/admin/maintain-products" element={ <MaintainProducts /> } />
+          <Route path="/admin/maintain-categories" element={ <MaintainCategories /> } />
+          <Route path="/admin/maintain-shops" element={ <MaintainShops /> } />
+        </>}
+        {loggedIn === false && <Route path="/admin/*" element={ <Navigate to="/login" /> } /> }
         <Route path="/login" element={ <Login /> } />
         <Route path="/signup" element={ <Signup /> } />
         <Route path="*" element={ <NotFound /> } />
@@ -49,13 +54,10 @@ function App() {
 
 export default App;
 
-// 13. 10.08 - dünaamiline CSS-ga, kontrolle inputile
-// KOJU: Nortali proovitöö
-//             context
-// 14. 15.08 - Sisselogimine/registreerumine API päringu kaudu
-//              , avalehele kujundust, halda-tooted kujundus, MUI
-// 15. 17.08 - URLi kaitset, TypeScript, CSS module, mobiilivaade, Karusell-galerii
-// 16. 22.08 - 
-// 17. 24.08 - Proovitöid, Nortali proovitöö
-//             Firebase-s: pilte üles laadida
-// 18. 07.09 - lõpuprojekt
+// 15. 17.08  1h - Nortali proovitöö
+// 16. 22.08 - 17.30-20.45 4ak/h avalehele kujundust, CSS moodulid, Karusell-galerii,
+//      TypeScript, mobiilivaade
+// 17. 24.08 - 17.30-20.45 4ak/h Fujitsu proovitöö
+// 17b. 31.08 - 17.30-19.30 2h Trinidad Wiseman proovitöö
+// 18. 14.09 - 17.30-19.00 2ak/h lõpuprojekt, mina ei räägi enam, teie lühiesitlus
+//    2ak/h    esitlete oma lehte ja osasid koodikohti

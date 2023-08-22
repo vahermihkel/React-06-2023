@@ -1,21 +1,23 @@
-import React, { useRef } from 'react';
+import { FormEvent, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
 export const ContactUs = () => {
-  const form = useRef();
+  const form = useRef<HTMLFormElement>(null);
 
-  const sendEmail = (e) => {
+  const sendEmail = (e: FormEvent) => {
     console.log(e);
     e.preventDefault(); // JavaScripti tavapärane käitumine kui Form Submititakse
     console.log(form.current); // <---- muutujate sisu kuvamiseks / info saamiseks
 
                                                       // saadab HTMLi emailJSi
-    emailjs.sendForm('service_fum24bj', 'template_ld2lsyd', form.current, 'Xbn0xj_4LjNugxYGl')
+    if (form.current) {
+      emailjs.sendForm('service_fum24bj', 'template_ld2lsyd', form.current, 'Xbn0xj_4LjNugxYGl')
       .then((result) => {
           console.log(result.text);
       }, (error) => {
           console.log(error.text);
       });
+    }
   };
 
   return (

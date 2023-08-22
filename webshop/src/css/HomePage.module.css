@@ -1,0 +1,22 @@
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.product {
+  border: 1px solid lightgray;
+}
+
+.product img {
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+  transition: 0.5s;
+}
+
+.product:hover img {
+  /* width: 110px;
+  height: 110px; */
+  transform: scale(1.1);
+  transition: 0.5s;
+}

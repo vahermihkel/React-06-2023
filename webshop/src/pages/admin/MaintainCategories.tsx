@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import config from "../../data/config.json";
+import { Category } from '../../models/Category';
 
 function MaintainCategories() {
-  const [categories, setCategories] = useState([]);
-  const categoryRef = useRef();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const categoryRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetch(config.categoryUrl)
@@ -11,9 +12,12 @@ function MaintainCategories() {
       .then(data => setCategories(data || [])) // null || [] , kui tuleb null, võtab parema poole ehk tühja array
   }, []);
 
-  const addCategory = (event) => {
+  const addCategory = (event: any) => {
     if (event.code !== "Enter" && event.type !== "click") {
       return;
+    }
+    if (!categoryRef.current) {
+      return
     }
     categories.push({"name": categoryRef.current.value});
     setCategories(categories.slice());
@@ -24,7 +28,7 @@ function MaintainCategories() {
     categoryRef.current.value = "";
   }
 
-  const deleteCategory = (index) => {
+  const deleteCategory = (index: number) => {
     categories.splice(index,1);
     setCategories(categories.slice());
     fetch(config.categoryUrl, {

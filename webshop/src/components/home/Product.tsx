@@ -3,15 +3,18 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import { CartSumContext } from '../../store/CartSumContext';
+import styles from "../../css/HomePage.module.css"
+import { Product as ProductModel } from '../../models/Product';
+import { CartProduct } from '../../models/CartProduct';
 
       // object destructuring (props asemel)
-function Product({product}) {
+function Product(props: {product: ProductModel}) {
   const { t } = useTranslation();
   const { setCartSum } = useContext(CartSumContext);
 
-  const addToCart = (productClicked) => {
+  const addToCart = (productClicked: ProductModel) => {
     // cartFile.push(product);
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]"); // localStoragest tuleb ALATI SÕNA
+    const cart: CartProduct[] = JSON.parse(localStorage.getItem("cart") || "[]"); // localStoragest tuleb ALATI SÕNA
     const index = cart.findIndex(cartProduct => cartProduct.product.id === productClicked.id);
     //                .findIndex()    0 või suurem arv                -1
     //                .find()          {}                           undefined
@@ -40,12 +43,12 @@ function Product({product}) {
   }
 
   return (
-    <div>
-      <img src={product.image} alt='' />
-      <div>{product.name}</div>
-      <div>{product.price.toFixed(2)}</div>
-      <Button onClick={() => addToCart(product)}>{t('add-to-cart')}</Button>
-      <Link to={'/product/' + product.id}>
+    <div className={styles.product}>
+      <img src={props.product.image} alt='' />
+      <div>{props.product.name}</div>
+      <div>{props.product.price.toFixed(2)}</div>
+      <Button onClick={() => addToCart(props.product)}>{t('add-to-cart')}</Button>
+      <Link to={'/product/' + props.product.id}>
         <Button>{t('product-details')}</Button>
       </Link>
       <br /><br />
